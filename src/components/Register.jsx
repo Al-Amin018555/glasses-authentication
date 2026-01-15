@@ -1,6 +1,25 @@
 import { Link } from "react-router";
+import { useForm } from "react-hook-form"
+import { useContext } from "react";
+import { AuthContext } from "../FirebaseProvider/FirebaseProvider";
 
 const Register = () => {
+    const { createUser } = useContext(AuthContext);
+
+    const { register, handleSubmit, formState: { errors }, } = useForm()
+
+    const onSubmit = (data) => {
+        const {email, password} = data;
+        createUser(email, password)
+            .then(result => {
+                const user = result.user;
+                console.log(user);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+    };
     return (
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content flex-col lg:flex-row-reverse">
@@ -11,20 +30,33 @@ const Register = () => {
                         quasi. In deleniti eaque aut repudiandae et a id nisi.
                     </p>
                 </div>
-                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                <form onSubmit={handleSubmit(onSubmit)} className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
                     <div className="card-body">
                         <fieldset className="fieldset">
                             <label className="label">Full Name</label>
-                            <input type="text" className="input" placeholder="Full Name" />
+                            <input type="text" className="input" placeholder="Full Name"
+                                {...register("fullName", { required: true })}
+                            />
+                            {errors.fullName && <span className="text-red-500">This field is required</span>}
 
                             <label className="label">Email</label>
-                            <input type="email" className="input" placeholder="Email" />
+                            <input type="email" className="input" placeholder="Email"
+                                {...register("email", { required: true })}
+
+                            />
+                            {errors.email && <span className="text-red-500">This field is required</span>}
 
                             <label className="label">Image Url</label>
-                            <input type="text" className="input" placeholder="Image Url" />
+                            <input type="text" className="input" placeholder="Image Url"
+                                {...register("imageUrl")}
+                            />
+                            {errors.imageUrl && <span className="text-red-500">This field is required</span>}
 
                             <label className="label">Password</label>
-                            <input type="password" className="input" placeholder="Password" />
+                            <input type="password" className="input" placeholder="Password"
+                                {...register("password", { required: true })}
+                            />
+                            {errors.password && <span className="text-red-500">This field is required</span>}
 
                             <div><a className="link link-hover">Forgot password?</a></div>
                             <button className="btn btn-neutral mt-4">Register</button>
@@ -35,7 +67,7 @@ const Register = () => {
                             </div>
                         </fieldset>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );
