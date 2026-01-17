@@ -1,15 +1,13 @@
 import { Link } from "react-router";
 import { useForm } from "react-hook-form"
-import { useContext } from "react";
-import { AuthContext } from "../FirebaseProvider/FirebaseProvider";
-
+import useAuth from "../hooks/useAuth";
 const Register = () => {
-    const { createUser } = useContext(AuthContext);
+    const { createUser } = useAuth();
 
     const { register, handleSubmit, formState: { errors }, } = useForm()
 
     const onSubmit = (data) => {
-        const {email, password} = data;
+        const { email, password } = data;
         createUser(email, password)
             .then(result => {
                 const user = result.user;

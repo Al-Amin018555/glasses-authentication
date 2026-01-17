@@ -1,10 +1,10 @@
-import { useContext } from "react";
 import { Link } from "react-router";
-import { AuthContext } from "../FirebaseProvider/FirebaseProvider";
 import { useForm } from "react-hook-form";
+import SocialLogin from "./SocialLogin";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
-    const { signIn } = useContext(AuthContext);
+    const { signIn } = useAuth()
 
     const { register, handleSubmit,
         formState: { errors },
@@ -53,6 +53,7 @@ const Login = () => {
                                 <p>New here?</p>
                                 <Link className="text-blue-600 font-semibold underline" to="/register">Create an account</Link>
                             </div>
+                            <SocialLogin></SocialLogin>
                         </fieldset>
                     </div>
                 </form>
